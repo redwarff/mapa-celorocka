@@ -10,6 +10,10 @@
 		"postinstall": "npm run setup",
     "build": "cd frontend && npm run build"
   },
+  "engines": {
+    "node": "12.4.0",
+    "npm": "6.9.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/redwarff/mapa-celorocka.git"
