@@ -16,11 +16,11 @@
     "koa-proxy": "^1.0.0-alpha.3",
     "nuxt": "^2.0.0",
     "nuxt-env": "^0.1.0",
-    "strapi-sdk-javascript": "^0.3.1"
+    "strapi-sdk-javascript": "^0.3.1",
+    "@mdi/font": "^4.4.95",
+    "@nuxtjs/vuetify": "^1.0.0"
   },
   "devDependencies": {
-    "@mdi/font": "^4.4.95",
-    "@nuxtjs/vuetify": "^1.0.0",
     "nodemon": "^1.18.9"
   }
 }
