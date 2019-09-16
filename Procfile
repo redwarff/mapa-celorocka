@@ -1,2 +1,1 @@
-be: cd backend && npm start
-web: cd frontend && npm start
+web: npx nf --procfile ProcfileProd start
