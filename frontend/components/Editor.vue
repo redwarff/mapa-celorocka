@@ -7,7 +7,7 @@
         x: {{ square.x }}
         y: {{ square.y }}
         <v-list>
-          <v-list-item v-for="pin in pins" :key="pin.id" @click="activePin = { ...pin }" :input-value="isListItemSelected(pin)">
+          <v-list-item v-for="pin in pins" :key="pin.id" @click="setActivePin(pin)" :input-value="isListItemSelected(pin)">
             <v-list-item-content>
               {{ pin.name }}
             </v-list-item-content>
@@ -15,17 +15,18 @@
               <v-icon>mdi-delete</v-icon>
             </v-list-item-icon>
           </v-list-item>
-          <v-list-item @click="activePin = emptyPin" :input-value="isListItemSelected({})">
+          <v-list-item @click="setActivePin({ x: square.x, y: square.y })" :input-value="isListItemSelected({})">
             Nový pin
           </v-list-item>
         </v-list>
       </div>
+      <v-btn color="green darken-1" text v-if="activePin.id" @click="$emit('move')">Přesunout</v-btn>
       <v-form>
-        <v-text-field v-model="activePin.name" label="Jméno"></v-text-field>
-        <v-text-field v-model="activePin.char" label="Znak"></v-text-field>
-        <v-select :items="groups" v-model="activePin.group" label="Skupina"></v-select>
-        <v-text-field v-model="activePin.x" label="Souřadnice X"></v-text-field>
-        <v-text-field v-model="activePin.y" label="Souřadnice Y"></v-text-field>
+        <v-text-field :value="activePin.name" @change="value => setActivePin({ ...activePin, name: value })" label="Jméno"></v-text-field>
+        <v-text-field :value="activePin.char" @change="value => setActivePin({ ...activePin, char: value })" label="Znak"></v-text-field>
+        <v-select :items="groups" :value="activePin.group" @change="value => setActivePin({ ...activePin, group: value })" label="Skupina"></v-select>
+        <v-text-field :value="activePin.x" @change="value => setActivePin({ ...activePin, x: value })" label="Souřadnice X"></v-text-field>
+        <v-text-field :value="activePin.y" @change="value => setActivePin({ ...activePin, y: value })" label="Souřadnice Y"></v-text-field>
       </v-form>
     </v-card-text>
 
@@ -54,35 +55,14 @@
 
 <script>
 
-const emptyPin = {
-  x: '',
-  y: '',
-  name: '',
-  group: '',
-  char: '',
-}
-
 export default {
-  data() {
-    return {
-      activePin: {
-        ...emptyPin,
-        x: this.square.x,
-        y: this.square.y,
-      }
-    }
-  },
   props: [
     'square',
     'pins',
   ],
   computed: {
-    emptyPin() {
-      return {
-        ...emptyPin,
-        x: this.square.x,
-        y: this.square.y,
-      }
+    activePin() {
+      return this.$store.state.pins.activePin
     },
     groups() {
       return [
@@ -126,14 +106,13 @@ export default {
         'pins/set',
         response,
       )
-      this.activePin = {
-        ...emptyPin,
-        x: this.square.x,
-        y: this.square.y,
-      }
+      this.$store.commit('pins/setActive', {})
     },
     isListItemSelected(pin) {
       return pin.id === this.activePin.id
+    },
+    setActivePin(pin) {
+      this.$store.commit('pins/setActive', pin)
     }
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "mapa-celorocka",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Mapa na celorocku",
   "main": "index.js",
   "scripts": {

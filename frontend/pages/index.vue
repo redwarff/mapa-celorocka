@@ -10,13 +10,13 @@
       md6
       class="container"
     >
-      <v-dialog :value="modalOpen" @click:outside="activeSquare = {}" max-width="320">
-        <editor v-if="modalOpen" :square="activeSquare" :pins="activePins" @close="activeSquare = {}"></editor>
+      <v-dialog :value="modalOpen && !isMoving" @click:outside="activeSquare = {}" max-width="320">
+        <editor v-if="modalOpen" :square="activeSquare" :pins="activePins" @close="activeSquare = {}" @move="onMove"></editor>
       </v-dialog>
       <div class="main" :style="{ width: `${mapWidth}px`, height: `${mapHeight}px` }">
         <img src="~/assets/map.png" class="img" :style="{ width: `${mapWidth}px`, height: `${mapHeight}px` }" />
         <div class="grid" :style="{ paddingLeft: `${offsetX}px`, paddingTop: `${offsetY}px` }">
-          <div v-for="square in squares" :key="square.id" class="square" :style="squareStyle" @click="activeSquare = square"></div>
+          <div v-for="square in squares" :key="square.id" class="square" :style="squareStyle" @click="onSquareClick(square)"></div>
           <pin v-for="pin in pins" :key="pin.id" :pin="pin" :baseSize="baseSize" :offsetX="offsetX" :offsetY="offsetY"></pin>
         </div>
       </div>
@@ -35,12 +35,14 @@ export default {
   },
   data () {
     return {
-      baseSize: 20,
-      offsetX: 18,
-      offsetY: 8,
-      mapWidth: 1920,
-      mapHeight: 1085,
+      baseSizeRaw: 20,
+      baseOffsetX: 18,
+      baseOffsetY: 8,
+      baseWidth: 1920,
+      baseHeight: 1085,
+      scale: 1.1,
       activeSquare: {},
+      isMoving: false,
     }
   },
   async asyncData({ store, app }) {
@@ -51,6 +53,21 @@ export default {
     )
   },
   computed: {
+    mapWidth() {
+      return this.baseWidth * this.scale
+    },
+    mapHeight() {
+      return this.baseHeight * this.scale
+    },
+    baseSize() {
+      return this.baseSizeRaw * this.scale
+    },
+    offsetX() {
+      return this.baseOffsetX * this.scale
+    },
+    offsetY() {
+      return this.baseOffsetY * this.scale
+    },
     pins() {
       return this.$store.state.pins.list
     },
@@ -90,7 +107,36 @@ export default {
       if (!val) {
         this.activeSquare = null
       }
-    }
+    },
+    onMove() {
+      this.isMoving = true
+    },
+    async onSquareClick(square) {
+      if (!this.isMoving) {
+        this.activeSquare = square
+        const activePin = this.activePins.length > 0
+          ? this.activePins[0]
+          : {
+            x: square.x,
+            y: square.y,
+          }
+        this.$store.commit('pins/setActive', activePin)
+      } else {
+        this.$store.commit('pins/setActive', {
+          ...this.$store.state.pins.activePin,
+          x: square.x,
+          y: square.y,
+        })
+        await this.$strapi.updateEntry('pins', this.$store.state.pins.activePin.id, this.$store.state.pins.activePin)
+        const response = await this.$strapi.getEntries('pins')
+        this.$store.commit(
+          'pins/set',
+          response,
+        )
+        this.activeSquare = {}
+        this.isMoving = false
+      }
+    },
   },
 }
 </script>
