@@ -6,9 +6,9 @@
   "scripts": {
     "dev": "npx nf --procfile ProcfileDev start",
     "setup": "npx nf --procfile ProcfileInstall start",
-		"start": "npx nf --procfile Procfile start",
+		"start": "npx nf --procfile ProcfileProd start",
 		"postinstall": "npm run setup",
-		"build": "cd frontend && npm run build"
+    "build": "cd frontend && npm run build"
   },
   "repository": {
     "type": "git",
@@ -20,7 +20,7 @@
     "url": "https://github.com/redwarff/mapa-celorocka/issues"
   },
   "homepage": "https://github.com/redwarff/mapa-celorocka#readme",
-  "devDependencies": {
+  "dependencies": {
     "foreman": "^3.0.1"
   }
 }
