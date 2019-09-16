@@ -31,10 +31,8 @@ async function start () {
     match: /^\/(api\/|admin\/|admin$)/,
     map: function(path) {
       if (/^\/api\//.test(path)) {
-        console.log('path redirected from ', path, ' to ', path.substring(4))
         return path.substring(4)
       }
-      console.log('path redirected from ', path, ' to ', path)
       return path
     }
   }));

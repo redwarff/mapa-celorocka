@@ -5,10 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "npx nf --procfile ProcfileDev start",
-    "setup": "npx nf --procfile ProcfileInstall start",
 		"start": "npx nf --procfile ProcfileProd start",
-		"postinstall": "npm run setup",
-    "build": "cd frontend && npm run build"
+		"postinstall": "npx nf --procfile ProcfileInstall start",
+    "build": "npx nf --procfile ProcfileBuild start"
   },
   "repository": {
     "type": "git",
