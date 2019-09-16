@@ -28,7 +28,7 @@ async function start () {
 
   app.use(proxy({
     host:  `http://${process.env.HOST || 'localhost'}:${process.env.API_PORT || '1337'}`,
-    match: /^\/(api|admin)\//,
+    match: /^\/(api\/|admin\/|admin$)/,
     map: function(path) {
       if (/^\/api\//.test(path)) {
         return path.substring(4)
