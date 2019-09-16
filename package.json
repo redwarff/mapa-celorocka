@@ -4,7 +4,10 @@
   "description": "Mapa na celorocku",
   "main": "index.js",
   "scripts": {
-    "dev": "npx nf --procfile ProcfileDev start"
+    "dev": "npx nf --procfile ProcfileDev start",
+    "build:fe": "cd frontend && npm install && npm run build",
+    "build:be": "cd backend && npm install && npm run build",
+    "build": "npm run build:fe && npm run build:be"
   },
   "repository": {
     "type": "git",
