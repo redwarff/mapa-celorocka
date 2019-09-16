@@ -1,0 +1,17 @@
+{
+  "host": "localhost",
+  "port": "${process.env.API_PORT || 1337}",
+  "production": true,
+  "proxy": {
+    "enabled": false
+  },
+  "cron": {
+    "enabled": false
+  },
+  "admin": {
+    "autoOpen": false,
+    "build": {
+      "backend": "${(process.env.HOST || http://localhost) + ':' + (process.env.PORT || '3000') + '/api'}"
+    }
+  }
+}

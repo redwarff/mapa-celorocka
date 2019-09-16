@@ -1,0 +1,26 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "description": "Mapa na celorocku",
+  "author": "red",
+  "private": true,
+  "scripts": {
+    "dev": "npx cross-env NODE_ENV=development nodemon server/index.js --watch server",
+    "build": "nuxt build",
+    "start": "npx cross-env NODE_ENV=production node server/index.js",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "cross-env": "^5.2.0",
+    "koa": "^2.6.2",
+    "koa-proxy": "^1.0.0-alpha.3",
+    "nuxt": "^2.0.0",
+    "nuxt-env": "^0.1.0",
+    "strapi-sdk-javascript": "^0.3.1"
+  },
+  "devDependencies": {
+    "@mdi/font": "^4.4.95",
+    "@nuxtjs/vuetify": "^1.0.0",
+    "nodemon": "^1.18.9"
+  }
+}
