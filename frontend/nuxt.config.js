@@ -45,7 +45,7 @@ module.exports = {
   modules: [
     ['nuxt-env', {
       keys: [
-        { key: 'HOST', default: 'http://localhost' },
+        { key: 'HOST', default: 'localhost' },
         { key: 'API_PORT', default: '1337' },
       ]
     }]
