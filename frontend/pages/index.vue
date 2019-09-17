@@ -165,11 +165,12 @@ export default {
 
 .square {
   z-index: 2;
-  border: 1px solid rgba(0,0,0,0.05);
+  /* border: 1px solid rgba(0,0,0,0.05); */
   cursor: pointer;
 }
 
 .square:hover {
-  background-color: rgba(255,255,255,0.3)
+  background-color: rgba(255,255,255,0.3);
 }
+
 </style>
