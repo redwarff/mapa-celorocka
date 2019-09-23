@@ -1,6 +1,6 @@
 <template>
   <div class="pin" :style="pinStyle">
-    {{ pin.char }}
+    {{ !isMulti ? pin.char : '' }}
   </div>
 </template>
 
@@ -11,6 +11,7 @@ export default {
     'baseSize',
     'offsetX',
     'offsetY',
+    'isMulti',
   ],
   computed: {
     pinStyle() {
@@ -20,6 +21,7 @@ export default {
         top: `${this.pin.y * this.baseSize + this.offsetY}px`,
         left: `${this.pin.x * this.baseSize + this.offsetX}px`,
         backgroundColor: this.backgroundColor,
+        backgroundImage: this.isMulti ? 'linear-gradient(135deg, #cc1439 20%, #9c4e17 40%, #4c6a91 60%, #857b56 80%)' : undefined,
       }
     },
     backgroundColor() {

@@ -17,7 +17,7 @@
         <img src="~/assets/map.png" class="img" :style="{ width: `${mapWidth}px`, height: `${mapHeight}px` }" />
         <div class="grid" :style="gridStyle" @mousemove="onMouseMove">
           <div class="square" v-if="this.hoverSquare.x >= 0 && this.hoverSquare.y >= 0" :style="squareStyle" @click="onSquareClick"></div>
-          <pin v-for="pin in pins" :key="pin.id" :pin="pin" :baseSize="baseSize" :offsetX="offsetX" :offsetY="offsetY"></pin>
+          <pin v-for="pin in pins" :key="pin.id" :pin="pin" :baseSize="baseSize" :offsetX="offsetX" :offsetY="offsetY" :isMulti="isPinMulti(pin)"></pin>
         </div>
       </div>
     </v-flex>
@@ -158,6 +158,9 @@ export default {
         this.activeSquare = {}
         this.isMoving = false
       }
+    },
+    isPinMulti(pin) {
+      return this.pins.some(p => p.x === pin.x && p.y === pin.y && p.id !== pin.id)
     },
   },
 }
