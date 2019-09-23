@@ -15,7 +15,7 @@
       </v-dialog>
       <div class="main" :style="{ width: `${mapWidth}px`, height: `${mapHeight}px` }">
         <img src="~/assets/map.png" class="img" :style="{ width: `${mapWidth}px`, height: `${mapHeight}px` }" />
-        <div class="grid" :style="{ paddingLeft: `${offsetX}px`, paddingTop: `${offsetY}px`, width: `${mapWidth}px`, height: `${mapHeight}px` }" @mousemove="onMouseMove">
+        <div class="grid" :style="gridStyle" @mousemove="onMouseMove">
           <div class="square" v-if="this.hoverSquare.x >= 0 && this.hoverSquare.y >= 0" :style="squareStyle" @click="onSquareClick"></div>
           <pin v-for="pin in pins" :key="pin.id" :pin="pin" :baseSize="baseSize" :offsetX="offsetX" :offsetY="offsetY"></pin>
         </div>
@@ -101,6 +101,16 @@ export default {
         top: `${this.hoverSquare.y * this.baseSize + this.offsetY}px`,
       }
     },
+    gridStyle() {
+      return {
+        paddingLeft: `${this.offsetX}px`,
+        paddingTop: `${this.offsetY}px`,
+        width: `${this.mapWidth}px`,
+        height: `${this.mapHeight}px`,
+        backgroundSize: `${this.baseSize}px ${this.baseSize}px`,
+        backgroundPosition: `${this.offsetX}px ${this.offsetY}px`,
+      }
+    },
     modalOpen() {
       return typeof this.activeSquare.x !== 'undefined'
     }
@@ -167,6 +177,8 @@ export default {
   flex-wrap: wrap;
   position: relative;
   z-index: 2;
+  background-image: url('~assets/grid-bg.png');
+  background-repeat: repeat;
 }
 
 .img {
