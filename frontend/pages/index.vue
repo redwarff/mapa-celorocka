@@ -15,8 +15,8 @@
       </v-dialog>
       <div class="main" :style="{ width: `${mapWidth}px`, height: `${mapHeight}px` }">
         <img src="~/assets/map.png" class="img" :style="{ width: `${mapWidth}px`, height: `${mapHeight}px` }" />
-        <div class="grid" :style="{ paddingLeft: `${offsetX}px`, paddingTop: `${offsetY}px` }">
-          <div v-for="square in squares" :key="square.id" class="square" :style="squareStyle" @click="onSquareClick(square)"></div>
+        <div class="grid" :style="{ paddingLeft: `${offsetX}px`, paddingTop: `${offsetY}px`, width: `${mapWidth}px`, height: `${mapHeight}px` }" @mousemove="onMouseMove">
+          <div class="square" v-if="this.hoverSquare.x >= 0 && this.hoverSquare.y >= 0" :style="squareStyle" @click="onSquareClick"></div>
           <pin v-for="pin in pins" :key="pin.id" :pin="pin" :baseSize="baseSize" :offsetX="offsetX" :offsetY="offsetY"></pin>
         </div>
       </div>
@@ -43,6 +43,10 @@ export default {
       scale: 1.1,
       activeSquare: {},
       isMoving: false,
+      mouse: {
+        x: 0,
+        y: 0,
+      },
     }
   },
   async asyncData({ store, app }) {
@@ -71,6 +75,16 @@ export default {
     pins() {
       return this.$store.state.pins.list
     },
+    hoverSquare() {
+      const x = Math.floor((this.mouse.x - this.offsetX) / this.baseSize)
+      const y = Math.floor((this.mouse.y - this.offsetY) / this.baseSize)
+      const id = `${x}-${y}`
+      return {
+        x,
+        y,
+        id,
+      }
+    },
     activePins() {
       if (!this.activeSquare) {
         return []
@@ -83,20 +97,9 @@ export default {
       return {
         width: `${this.baseSize}px`,
         height: `${this.baseSize}px`,
+        left: `${this.hoverSquare.x * this.baseSize + this.offsetX}px`,
+        top: `${this.hoverSquare.y * this.baseSize + this.offsetY}px`,
       }
-    },
-    squares() {
-      const list = []
-      for (let i = 0; (i + 1) * this.baseSize < this.mapHeight - this.offsetY; i++) {
-        for (let j = 0; (j + 1) * this.baseSize < this.mapWidth - this.offsetX; j++) {
-          list.push({
-            x: j,
-            y: i,
-            id: `${j}-${i}`
-          })
-        }
-      }
-      return list
     },
     modalOpen() {
       return typeof this.activeSquare.x !== 'undefined'
@@ -111,7 +114,16 @@ export default {
     onMove() {
       this.isMoving = true
     },
-    async onSquareClick(square) {
+    onMouseMove(e) {
+      if (e.target.classList.contains('square')) {
+        return
+      }
+      const rect = e.target.getBoundingClientRect()
+      this.mouse.x = e.clientX - rect.left
+      this.mouse.y = e.clientY - rect.top
+    },
+    async onSquareClick() {
+      const square = this.hoverSquare
       if (!this.isMoving) {
         this.activeSquare = square
         const activePin = this.activePins.length > 0
@@ -154,6 +166,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   position: relative;
+  z-index: 2;
 }
 
 .img {
@@ -164,12 +177,8 @@ export default {
 }
 
 .square {
-  z-index: 2;
-  /* border: 1px solid rgba(0,0,0,0.05); */
+  position: absolute;
   cursor: pointer;
-}
-
-.square:hover {
   background-color: rgba(255,255,255,0.3);
 }
 
