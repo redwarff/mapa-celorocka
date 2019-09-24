@@ -36,6 +36,9 @@ export default {
         return '#4c6a91'
       }
       if (group === 'mise') {
+        return '#1ab844'
+      } 
+      if (group === 'mise-neznama') {
         return '#cc1439'
       } else {
         return '#000'

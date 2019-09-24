@@ -67,6 +67,14 @@ export default {
     groups() {
       return [
         {
+          text: 'Neznámá mise',
+          value: 'mise-neznama',
+        },
+        {
+          text: 'Mise',
+          value: 'mise',
+        },
+        {
           text: 'Bizoni',
           value: 'bizoni',
         },
@@ -77,10 +85,6 @@ export default {
         {
           text: 'Orlové',
           value: 'orlove',
-        },
-        {
-          text: 'Mise',
-          value: 'mise',
         },
       ]
     }
